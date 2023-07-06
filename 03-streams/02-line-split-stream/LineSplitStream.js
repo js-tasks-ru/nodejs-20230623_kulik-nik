@@ -17,17 +17,21 @@ class LineSplitStream extends stream.Transform {
   }
 
   _transform(chunk, encoding, callback) {
-    this.accum += chunk.toString()
-    if (this.accum.includes(os.EOL)) {
-      const [first, second] = this.accum.split(os.EOL);
-      this.push(first);
-      this.accum = second;
+      this.accum += chunk.toString();
+      if(this.accum.includes(os.EOL)) {
+        const spiltedStr = this.accum.split(os.EOL);
+        this.accum = spiltedStr.pop();
+        spiltedStr.forEach((str)=> {
+          this.push(str);
+        })
       }
-      callback(null, null);
+      callback();
     }
 
   _flush(callback) {
-    this.push(this.accum);
+    if(this.accum) {
+      this.push(this.accum);
+    }
     this.accum = '';
     callback();
   }
