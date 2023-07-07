@@ -19,9 +19,9 @@ class LineSplitStream extends stream.Transform {
   _transform(chunk, encoding, callback) {
       this.accum += chunk.toString();
       if(this.accum.includes(os.EOL)) {
-        const spiltedStr = this.accum.split(os.EOL);
-        this.accum = spiltedStr.pop();
-        spiltedStr.forEach((str)=> {
+        const splitted = this.accum.split(os.EOL);
+        this.accum = splitted.pop();
+        splitted.forEach((str)=> {
           this.push(str);
         })
       }

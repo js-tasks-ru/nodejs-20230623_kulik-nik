@@ -9,18 +9,18 @@ const ONE_MEGABYTE = 1048576;
 
 const server = new http.Server();
 
+const unlinkFileWhenAborted = (stream, pathFile)=> {+
+  stream.destroy();
+  fs.unlink(pathFile, (err)=> {
+    if (err) throw err;
+  })
+};
+
 server.on('request', (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const pathname = url.pathname.slice(1);
 
   const filepath = path.join(__dirname, 'files', pathname);
-
-  const unlinkFileWhenAborted = (stream, pathFile)=> {+
-    stream.destroy();
-    fs.unlink(pathFile, (err)=> {
-      if (err) throw err;
-    })
-  };
 
   let limitedStream = null;
 
@@ -59,6 +59,7 @@ server.on('request', (req, res) => {
               res.setHeader('Content-Type', 'text/html; charset=utf-8');
               res.end(err.message);
             });
+            
             req.pipe(limitedStream).pipe(writeFileStream);
           }
         });
