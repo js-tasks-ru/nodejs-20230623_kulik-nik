@@ -25,7 +25,7 @@ class LimitSizeStream extends stream.Transform {
   }
 
   isLengthNotExceeded(accum) {
-    return this.limit > accum;
+    return this.limit >= accum;
   };
 
   processData(chunk, encoding) {
