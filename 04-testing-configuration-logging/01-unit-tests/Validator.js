@@ -9,12 +9,21 @@ module.exports = class Validator {
     for (const field of Object.keys(this.rules)) {
       const rules = this.rules[field];
 
+      if(!obj) {
+        errors.push({error: 'object is not passed'});
+        break;
+      }
+
       const value = obj[field];
+      if (!value) {
+        errors.push({field, error: `expect value, got ${value}`});
+        continue;
+      }
       const type = typeof value;
 
       if (type !== rules.type) {
         errors.push({field, error: `expect ${rules.type}, got ${type}`});
-        return errors;
+        continue;
       }
 
       switch (type) {
@@ -40,3 +49,5 @@ module.exports = class Validator {
     return errors;
   }
 };
+
+
