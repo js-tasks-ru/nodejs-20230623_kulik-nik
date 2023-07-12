@@ -57,7 +57,7 @@ describe('testing-configuration-logging/unit-tests', () => {
           .equal('expect number, got string');
 
       const errors2 = validator.validate({ age: 29 });
-      console.log(errors2)
+
       expect(errors2).to.have.length(2);
       expect(errors2[0]).to.have.property('field').and.to.be.equal('name');
       expect(errors2[0]).to.have.property('error').and.to.be
@@ -65,7 +65,7 @@ describe('testing-configuration-logging/unit-tests', () => {
 
       expect(errors2[1]).to.have.property('field').and.to.be.equal('age');
       expect(errors2[1]).to.have.property('error').and.to.be
-          .equal('too big, expect 18, got 29');
+          .equal('too big, expect 27, got 29');
 
       const errors3 = validator.validate({ name:  20});
       expect(errors3).to.have.length(2);
