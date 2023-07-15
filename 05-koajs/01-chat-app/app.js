@@ -5,12 +5,12 @@ const {
   promises,
 } = require('fs');
 const app = new Koa();
-const BD_PATH = path.resolve(__dirname, 'bd/messages.json');
+const DB_PATH = path.resolve(__dirname, 'db/messages.json');
 const {
   messages,
-} = require('./bd/messages.json');
+} = require('./db/messages.json');
 
-const watcher = watch(BD_PATH);
+const watcher = watch(DB_PATH);
 const watchForChanges = async () => {
   return new Promise((resolve) => {
     watcher.once('error', (err) => {
@@ -36,7 +36,7 @@ router.get('/subscribe', async (ctx, next) => {
     await watchForChanges();
     const {
       messages,
-    } = JSON.parse(await promises.readFile(BD_PATH, {
+    } = JSON.parse(await promises.readFile(DB_PATH, {
       encoding: 'utf8',
     }));
     ctx.response.status = 200;
@@ -55,7 +55,7 @@ router.post('/publish', async (ctx, next) => {
   }
   messages.push(message);
   try {
-    await promises.writeFile(BD_PATH, JSON.stringify({
+    await promises.writeFile(DB_PATH, JSON.stringify({
       messages,
     }));
     ctx.response.status = 201;
