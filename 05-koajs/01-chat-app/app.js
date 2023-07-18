@@ -24,6 +24,8 @@ const watchForChanges = async () => {
   });
 };
 
+watcher.unref();
+
 
 app.use(require('koa-static')(path.join(__dirname, 'public')));
 app.use(require('koa-bodyparser')());
@@ -65,11 +67,7 @@ router.post('/publish', async (ctx, next) => {
     ctx.throw(500, 'Не удалось создать сообщение');
   }
 });
-
 app.use(router.routes());
 
-app.on('close', () => {
-  watcher.close();
-});
 
 module.exports = app;
