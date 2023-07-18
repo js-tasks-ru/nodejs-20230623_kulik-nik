@@ -68,4 +68,8 @@ router.post('/publish', async (ctx, next) => {
 
 app.use(router.routes());
 
+app.on('close', () => {
+  watcher.close();
+});
+
 module.exports = app;
