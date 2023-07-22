@@ -1,9 +1,8 @@
 const {
   mongoose,
-  ObjectId,
 } = require('mongoose');
 const mapProduct = require('../mappers/product');
-const modelProduct = require('../models/Product');
+const Product = require('../models/Product');
 
 
 module.exports.productsBySubcategory = async function productsBySubcategory(ctx, next) {
@@ -15,7 +14,7 @@ module.exports.productsBySubcategory = async function productsBySubcategory(ctx,
 
   if (mongoose.isValidObjectId(subcategory)) {
     const products = [];
-    (await modelProduct.find({
+    (await Product.find({
       'subcategory': subcategory,
     })).forEach((product) => products.push(mapProduct(product)));
 
@@ -31,7 +30,7 @@ module.exports.productsBySubcategory = async function productsBySubcategory(ctx,
 
 module.exports.productList = async function productList(ctx, next) {
   const products = [];
-  (await modelProduct.find()).forEach((product) => products
+  (await Product.find()).forEach((product) => products
     .push(mapProduct(product)));
   ctx.status = 200;
   ctx.type = 'application/json';
@@ -45,7 +44,7 @@ module.exports.productById = async function productById(ctx, next) {
     id,
   } = ctx.params;
   if (mongoose.isValidObjectId(id)) {
-    const product = await modelProduct.findById(id);
+    const product = await Product.findById(id);
     if (!product) {
       ctx.throw(404, 'No product found');
     }
