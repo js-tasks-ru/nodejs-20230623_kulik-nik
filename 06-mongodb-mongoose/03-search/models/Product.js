@@ -30,6 +30,17 @@ const productSchema = new mongoose.Schema({
 
   images: [String],
 
+}).index({
+  description: 'text',
+  title: 'text',
+}, {
+
+  weights: {
+    title: 10,
+    description: 5,
+  },
+  default_language: 'russian',
+  name: 'TextSearchIndex',
 });
 
 module.exports = connection.model('Product', productSchema);
