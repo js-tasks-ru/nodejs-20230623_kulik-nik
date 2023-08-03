@@ -28,7 +28,7 @@ await sendMail({
 });
 
 ctx.status = 200;
-ctx.type = 'text/html; charset=utf-8';
+ctx.type = 'application/json';
 ctx.body = {
   status: 'ok',
 };
